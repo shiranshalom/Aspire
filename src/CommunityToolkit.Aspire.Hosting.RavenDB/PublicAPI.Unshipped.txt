@@ -1,0 +1,16 @@
+#nullable enable
+Aspire.Hosting.ApplicationModel.RavenDBServerResource
+Aspire.Hosting.ApplicationModel.RavenDBServerResource.RavenDBServerResource(string! name, bool isSecured) -> void
+Aspire.Hosting.ApplicationModel.RavenDBServerResource.PrimaryEndpoint.get -> Aspire.Hosting.ApplicationModel.EndpointReference!
+Aspire.Hosting.ApplicationModel.RavenDBServerResource.ConnectionStringExpression.get -> Aspire.Hosting.ApplicationModel.ReferenceExpression!
+Aspire.Hosting.ApplicationModel.RavenDBServerResource.Databases.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>!
+Aspire.Hosting.RavenDBBuilderExtensions
+static Aspire.Hosting.RavenDBBuilderExtensions.AddDatabase(this Aspire.Hosting.ApplicationModel.IResourceBuilder<Aspire.Hosting.ApplicationModel.RavenDBServerResource!>! builder, string! name, string? databaseName = null) -> Aspire.Hosting.ApplicationModel.IResourceBuilder<Aspire.Hosting.ApplicationModel.RavenDBDatabaseResource!>!
+static Aspire.Hosting.RavenDBBuilderExtensions.AddRavenDB(this Aspire.Hosting.IDistributedApplicationBuilder! builder, string! name, bool secured = false, System.Collections.Generic.Dictionary<string!, object!>? environmentVariables = null, int? port = null) -> Aspire.Hosting.ApplicationModel.IResourceBuilder<Aspire.Hosting.ApplicationModel.RavenDBServerResource!>!
+static Aspire.Hosting.RavenDBBuilderExtensions.WithDataBindMount(this Aspire.Hosting.ApplicationModel.IResourceBuilder<Aspire.Hosting.ApplicationModel.RavenDBServerResource!>! builder, string! source, bool isReadOnly = false) -> Aspire.Hosting.ApplicationModel.IResourceBuilder<Aspire.Hosting.ApplicationModel.RavenDBServerResource!>!
+static Aspire.Hosting.RavenDBBuilderExtensions.WithDataVolume(this Aspire.Hosting.ApplicationModel.IResourceBuilder<Aspire.Hosting.ApplicationModel.RavenDBServerResource!>! builder, string? name = null, bool isReadOnly = false) -> Aspire.Hosting.ApplicationModel.IResourceBuilder<Aspire.Hosting.ApplicationModel.RavenDBServerResource!>!
+Aspire.Hosting.ApplicationModel.RavenDBDatabaseResource
+Aspire.Hosting.ApplicationModel.RavenDBDatabaseResource.RavenDBDatabaseResource(string! name, string! databaseName, Aspire.Hosting.ApplicationModel.RavenDBServerResource! parent) -> void
+Aspire.Hosting.ApplicationModel.RavenDBDatabaseResource.Parent.get -> Aspire.Hosting.ApplicationModel.RavenDBServerResource!
+Aspire.Hosting.ApplicationModel.RavenDBDatabaseResource.DatabaseName.get -> string!
+Aspire.Hosting.ApplicationModel.RavenDBDatabaseResource.ConnectionStringExpression.get -> Aspire.Hosting.ApplicationModel.ReferenceExpression!

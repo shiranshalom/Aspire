@@ -10,6 +10,7 @@
     <PackageVersion Include="Aspire.Hosting.Python" Version="$(AspireVersion)" />
     <PackageVersion Include="Aspire.Hosting.Rabbitmq" Version="$(AspireVersion)" />
     <PackageVersion Include="Aspire.Hosting.SqlServer" Version="$(AspireVersion)" />
+    <PackageVersion Include="AspNetCore.HealthChecks.RavenDB" Version="8.0.1" />
     <!-- AspNetCore packages -->
     <PackageVersion Include="AspNetCore.HealthChecks.EventStore.gRPC" Version="8.0.1" />
     <PackageVersion Include="AspNetCore.HealthChecks.SqlServer" Version="8.0.2" />
@@ -18,6 +19,8 @@
     <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="$(DotNetExtensionsVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="$(DotNetExtensionsVersion)" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="7.1.0" />
+    <PackageVersion Include="RavenDB.Client" Version="6.2.1" />
+    <PackageVersion Include="RavenDB.TestDriver" Version="6.2.1" />
     <!-- .NET packages -->
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="$(DotNetExtensionsVersion)" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="$(DotNetExtensionsVersion)" />
