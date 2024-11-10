@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RavenDB.Client" />
+    <PackageReference Include="RavenDB.TestDriver" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CommunityToolkit.Aspire.Hosting.RavenDB\CommunityToolkit.Aspire.Hosting.RavenDB.Client.csproj" />
+  </ItemGroup>
+
+</Project>
