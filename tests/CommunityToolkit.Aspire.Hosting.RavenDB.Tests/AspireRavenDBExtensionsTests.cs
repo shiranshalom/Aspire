@@ -1,4 +1,3 @@
-using CommunityToolkit.Aspire.Hosting.RavenDB.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
@@ -6,7 +5,7 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
 using Raven.Client.Http;
 
-namespace CommunityToolkit.Aspire.Hosting.RavenDB.Tests;
+namespace CommunityToolkit.Aspire.RavenDB.Client.Tests;
 
 public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
 {

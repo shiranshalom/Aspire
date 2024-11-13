@@ -2,7 +2,7 @@
 using Raven.Client.Documents;
 using System.Security.Cryptography.X509Certificates;
 
-namespace CommunityToolkit.Aspire.Hosting.RavenDB.Client;
+namespace CommunityToolkit.Aspire.RavenDB.Client;
 
 /// <summary>
 /// Provides the client configuration settings for connecting to a RavenDB database.

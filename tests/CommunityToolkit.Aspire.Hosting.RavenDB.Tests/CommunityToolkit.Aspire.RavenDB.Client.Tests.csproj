@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CommunityToolkit.Aspire.Hosting.RavenDB\CommunityToolkit.Aspire.Hosting.RavenDB.Client.csproj" />
+    <ProjectReference Include="..\..\src\CommunityToolkit.Aspire.Hosting.RavenDB\CommunityToolkit.Aspire.RavenDB.Client.csproj" />
   </ItemGroup>
 
 </Project>

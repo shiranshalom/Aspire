@@ -5,7 +5,7 @@ using Raven.Client.Documents.Session;
 using Raven.Client.ServerWide;
 using Raven.Client.ServerWide.Operations;
 
-namespace CommunityToolkit.Aspire.Hosting.RavenDB.Client;
+namespace CommunityToolkit.Aspire.RavenDB.Client;
 
 /// <summary>
 /// Extension methods for connecting RavenDB database.

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 
-namespace CommunityToolkit.Aspire.Hosting.RavenDB.Client;
+namespace CommunityToolkit.Aspire.RavenDB.Client;
 
 internal static class HealthChecksExtensions
 {
