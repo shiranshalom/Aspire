@@ -146,8 +146,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunityToolkit.Aspire.Hosting.Bun.Tests", "tests\CommunityToolkit.Aspire.Hosting.Bun.Tests\CommunityToolkit.Aspire.Hosting.Bun.Tests.csproj", "{DA5DD2CB-51D9-429F-91F5-BF3D1A13A21A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityToolkit.Aspire.Hosting.RavenDB.Client", "src\CommunityToolkit.Aspire.Hosting.RavenDB\CommunityToolkit.Aspire.Hosting.RavenDB.Client.csproj", "{11768120-E86C-4464-A68A-6F9BD0999BB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityToolkit.Aspire.RavenDB.Client", "src\CommunityToolkit.Aspire.Hosting.RavenDB\CommunityToolkit.Aspire.RavenDB.Client.csproj", "{11768120-E86C-4464-A68A-6F9BD0999BB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunityToolkit.Aspire.Hosting.RavenDB.Tests", "tests\CommunityToolkit.Aspire.Hosting.RavenDB.Tests\CommunityToolkit.Aspire.Hosting.RavenDB.Tests.csproj", "{BA416CE7-0C29-4FBA-B31A-327A7ECB56C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityToolkit.Aspire.RavenDB.Client.Tests", "tests\CommunityToolkit.Aspire.Hosting.RavenDB.Tests\CommunityToolkit.Aspire.RavenDB.Client.Tests.csproj", "{BA416CE7-0C29-4FBA-B31A-327A7ECB56C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

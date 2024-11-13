@@ -1,7 +1,7 @@
 using Raven.Client.Documents;
 using Raven.Embedded;
 
-namespace CommunityToolkit.Aspire.Hosting.RavenDB.Tests;
+namespace CommunityToolkit.Aspire.RavenDB.Client.Tests;
 
 public sealed class RavenDbServerFixture : IAsyncLifetime, IDisposable
 {
