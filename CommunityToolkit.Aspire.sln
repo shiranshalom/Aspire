@@ -129,9 +129,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests-app-hosts", "tests-ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ollama.AppHost", "tests-app-hosts\Ollama.AppHost\Ollama.AppHost.csproj", "{2CC61B84-CF97-4CE7-A08F-2EECF4AEAD92}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityToolkit.Aspire.RavenDB.Client", "src\CommunityToolkit.Aspire.Hosting.RavenDB\CommunityToolkit.Aspire.RavenDB.Client.csproj", "{11768120-E86C-4464-A68A-6F9BD0999BB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityToolkit.Aspire.RavenDB.Client", "src\CommunityToolkit.Aspire.RavenDB.Client\CommunityToolkit.Aspire.RavenDB.Client.csproj", "{11768120-E86C-4464-A68A-6F9BD0999BB9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityToolkit.Aspire.RavenDB.Client.Tests", "tests\CommunityToolkit.Aspire.Hosting.RavenDB.Tests\CommunityToolkit.Aspire.RavenDB.Client.Tests.csproj", "{BA416CE7-0C29-4FBA-B31A-327A7ECB56C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityToolkit.Aspire.RavenDB.Client.Tests", "tests\CommunityToolkit.Aspire.RavenDB.Client.Tests\CommunityToolkit.Aspire.RavenDB.Client.Tests.csproj", "{BA416CE7-0C29-4FBA-B31A-327A7ECB56C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
