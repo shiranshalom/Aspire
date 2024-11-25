@@ -127,7 +127,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunityToolkit.Aspire.Hos
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests-app-hosts", "tests-app-hosts", "{79CBF217-CED1-4BB2-9A72-37D2429F83B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ollama.AppHost", "tests-app-hosts\Ollama.AppHost\Ollama.AppHost.csproj", "{2CC61B84-CF97-4CE7-A08F-2EECF4AEAD92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ollama.AppHost", "tests-app-hosts\Ollama.AppHost\Ollama.AppHost.csproj", "{2CC61B84-CF97-4CE7-A08F-2EECF4AEAD92}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunityToolkit.Aspire.Hosting.Python.Extensions", "src\CommunityToolkit.Aspire.Hosting.Python.Extensions\CommunityToolkit.Aspire.Hosting.Python.Extensions.csproj", "{4DCF987E-9071-4899-8B5F-5FDAF2BC77D3}"
 EndProject
@@ -150,6 +150,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityToolkit.Aspire.Rav
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityToolkit.Aspire.RavenDB.Client", "src\CommunityToolkit.Aspire.RavenDB.Client\CommunityToolkit.Aspire.RavenDB.Client.csproj", "{11768120-E86C-4464-A68A-6F9BD0999BB9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityToolkit.Aspire.RavenDB.Client.Tests", "tests\CommunityToolkit.Aspire.RavenDB.Client.Tests\CommunityToolkit.Aspire.RavenDB.Client.Tests.csproj", "{BA416CE7-0C29-4FBA-B31A-327A7ECB56C9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityToolkit.Aspire.Hosting.RavenDB", "src\CommunityToolkit.Aspire.Hosting.RavenDB\CommunityToolkit.Aspire.Hosting.RavenDB.csproj", "{A7852D8B-BE38-4D95-A8D6-3B6F96F94A5A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityToolkit.Aspire.Hosting.RavenDB.Tests", "tests\CommunityToolkit.Aspire.Hosting.RavenDB.Tests\CommunityToolkit.Aspire.Hosting.RavenDB.Tests.csproj", "{35B51242-F576-4CCE-BA29-712A80749CB1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RavenDB.AppHost", "tests-app-hosts\RavenDB.AppHost\RavenDB.AppHost\RavenDB.AppHost.csproj", "{9164EC65-08BD-4C8F-A707-3F300E1E5C74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -385,6 +391,18 @@ Global
 		{BA416CE7-0C29-4FBA-B31A-327A7ECB56C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA416CE7-0C29-4FBA-B31A-327A7ECB56C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA416CE7-0C29-4FBA-B31A-327A7ECB56C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7852D8B-BE38-4D95-A8D6-3B6F96F94A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7852D8B-BE38-4D95-A8D6-3B6F96F94A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7852D8B-BE38-4D95-A8D6-3B6F96F94A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7852D8B-BE38-4D95-A8D6-3B6F96F94A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35B51242-F576-4CCE-BA29-712A80749CB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35B51242-F576-4CCE-BA29-712A80749CB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35B51242-F576-4CCE-BA29-712A80749CB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35B51242-F576-4CCE-BA29-712A80749CB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9164EC65-08BD-4C8F-A707-3F300E1E5C74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9164EC65-08BD-4C8F-A707-3F300E1E5C74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9164EC65-08BD-4C8F-A707-3F300E1E5C74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9164EC65-08BD-4C8F-A707-3F300E1E5C74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -460,6 +478,9 @@ Global
 		{DA5DD2CB-51D9-429F-91F5-BF3D1A13A21A} = {899F0713-7FC6-4750-BAFC-AC650B35B453}
 		{11768120-E86C-4464-A68A-6F9BD0999BB9} = {414151D4-7009-4E78-A5C6-D99EBD1E67D1}
 		{BA416CE7-0C29-4FBA-B31A-327A7ECB56C9} = {899F0713-7FC6-4750-BAFC-AC650B35B453}
+		{A7852D8B-BE38-4D95-A8D6-3B6F96F94A5A} = {414151D4-7009-4E78-A5C6-D99EBD1E67D1}
+		{35B51242-F576-4CCE-BA29-712A80749CB1} = {899F0713-7FC6-4750-BAFC-AC650B35B453}
+		{9164EC65-08BD-4C8F-A707-3F300E1E5C74} = {79CBF217-CED1-4BB2-9A72-37D2429F83B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {08B1D4B8-D2C5-4A64-BB8B-E1A2B29525F0}
