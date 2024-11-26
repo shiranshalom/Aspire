@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <ItemGroup>
-    <PackageReference Include="RavenDB.Client" />
     <PackageReference Include="RavenDB.TestDriver" />
   </ItemGroup>
 

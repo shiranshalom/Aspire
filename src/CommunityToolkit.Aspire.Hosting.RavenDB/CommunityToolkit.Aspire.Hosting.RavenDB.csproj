@@ -11,11 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.RavenDB" />
+    <Folder Include="Utils\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Utils\" />
+    <PackageReference Include="AspNetCore.HealthChecks.RavenDB" />
   </ItemGroup>
 
 </Project>

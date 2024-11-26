@@ -1,4 +1,5 @@
 
+using IdentityModel;
 using Raven.Client.Documents;
 using System.Security.Cryptography.X509Certificates;
 
@@ -82,6 +83,10 @@ public sealed class RavenDBSettings
             return null;
         }
 
+#if NET9_0_OR_GREATER
+        return X509CertificateLoader.LoadCertificateFromFile(CertificatePath); // TODO [shiran]
+#else
         return new X509Certificate2(CertificatePath, CertificatePassword);
+#endif
     }
 }
