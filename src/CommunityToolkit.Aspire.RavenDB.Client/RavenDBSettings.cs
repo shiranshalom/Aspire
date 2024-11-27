@@ -38,6 +38,11 @@ public sealed class RavenDBSettings
     public string? CertificatePassword { get; set; }
 
     /// <summary>
+    /// The certificate for RavenDB server.
+    /// </summary>
+    public X509Certificate2? Certificate { get; set; }
+
+    /// <summary>
     /// The name of the database to connect to.
     /// </summary>
     public string? DatabaseName { get; set; }
@@ -77,11 +82,16 @@ public sealed class RavenDBSettings
     /// otherwise, <see langword="null"/>.</returns>
     public X509Certificate2? GetCertificate()
     {
+        if (Certificate != null)
+            return Certificate;
+
         if (string.IsNullOrEmpty(CertificatePath))
         {
             return null;
         }
 
+#pragma warning disable SYSLIB0057
         return new X509Certificate2(CertificatePath, CertificatePassword);
+#pragma warning restore SYSLIB0057
     }
 }

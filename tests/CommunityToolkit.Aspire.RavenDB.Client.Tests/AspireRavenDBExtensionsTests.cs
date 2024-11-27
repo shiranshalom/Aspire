@@ -26,7 +26,7 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
         var builder = CreateBuilder();
 
         var settings = GetDefaultSettings(shouldCreateDatabase: false);
-        builder.AddKeyedRavenDBClient(settings, DefaultConnectionName);
+        builder.AddKeyedRavenDBClient(serviceKey: DefaultConnectionName, settings);
         using var host = builder.Build();
 
         using var documentStore = host.Services.GetRequiredKeyedService<IDocumentStore>(DefaultConnectionName);
@@ -57,7 +57,7 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
         var settings = GetDefaultSettings(databaseName);
 
         var builder = CreateBuilder();
-        builder.AddKeyedRavenDBClient(settings, DefaultConnectionName);
+        builder.AddKeyedRavenDBClient(serviceKey:DefaultConnectionName, settings);
         using var host = builder.Build();
 
         using var documentStore = host.Services.GetRequiredKeyedService<IDocumentStore>(DefaultConnectionName);
@@ -75,7 +75,7 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
         var settings = GetDefaultSettings(databaseName);
 
         var builder = CreateBuilder();
-        builder.AddKeyedRavenDBClient(settings, DefaultConnectionName);
+        builder.AddKeyedRavenDBClient(serviceKey: DefaultConnectionName, settings);
         using var host = builder.Build();
 
         using var documentStore = host.Services.GetRequiredKeyedService<IDocumentStore>(DefaultConnectionName);
@@ -93,7 +93,7 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
         var settings = GetDefaultSettings(databaseName);
 
         var builder = CreateBuilder();
-        builder.AddKeyedRavenDBClient(settings, DefaultConnectionName);
+        builder.AddKeyedRavenDBClient(serviceKey: DefaultConnectionName, settings);
         using var host = builder.Build();
 
         using var documentStore = host.Services.GetRequiredKeyedService<IDocumentStore>(DefaultConnectionName);
@@ -128,7 +128,7 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
         var databaseName = Guid.NewGuid().ToString("N");
 
         var builder = CreateBuilder();
-        builder.AddKeyedRavenDBClient(connectionUrls: new[] { DefaultConnectionString }, databaseName: databaseName, DefaultConnectionName);
+        builder.AddKeyedRavenDBClient(serviceKey: DefaultConnectionName, connectionUrls: new[] { DefaultConnectionString }, databaseName: databaseName);
         using var host = builder.Build();
 
         Assert.Throws<InvalidOperationException>(() => host.Services.GetRequiredService<IDocumentStore>());
@@ -178,8 +178,8 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
         var settings1 = GetDefaultSettings(databaseName1);
         var settings2 = GetDefaultSettings(databaseName2);
 
-        builder.AddKeyedRavenDBClient(settings1, connectionName1);
-        builder.AddKeyedRavenDBClient(settings2, connectionName2);
+        builder.AddKeyedRavenDBClient(serviceKey: connectionName1, settings1);
+        builder.AddKeyedRavenDBClient(serviceKey: connectionName2, settings2);
 
         using var host = builder.Build();
 
@@ -303,7 +303,7 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
         };
 
         var builder = CreateBuilder();
-        builder.AddKeyedRavenDBClient(settings, DefaultConnectionName);
+        builder.AddKeyedRavenDBClient(serviceKey: DefaultConnectionName, settings);
         using var host = builder.Build();
 
         var healthCheckService = host.Services.GetRequiredService<HealthCheckService>();
@@ -326,7 +326,7 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
         };
 
         var builder = CreateBuilder();
-        builder.AddKeyedRavenDBClient(settings, DefaultConnectionName);
+        builder.AddKeyedRavenDBClient(serviceKey: DefaultConnectionName, settings);
         using var host = builder.Build();
 
         var healthCheckService = host.Services.GetService<HealthCheckService>();
@@ -376,7 +376,7 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
         };
 
         var builder = CreateBuilder();
-        builder.AddKeyedRavenDBClient(settings, DefaultConnectionName);
+        builder.AddKeyedRavenDBClient(serviceKey: DefaultConnectionName, settings);
         using var host = builder.Build();
 
         using var documentStore = host.Services.GetRequiredKeyedService<IDocumentStore>(DefaultConnectionName);

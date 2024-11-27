@@ -4,6 +4,7 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
 using Raven.Client.ServerWide;
 using Raven.Client.ServerWide.Operations;
+using System.Security.Cryptography.X509Certificates;
 
 namespace CommunityToolkit.Aspire.RavenDB.Client;
 
@@ -46,14 +47,19 @@ public static class RavenDBClientExtension
     /// <param name="databaseName">Optional: the name of an existing database to connect to.
     /// If not specified, <see cref="IDocumentSession"/> and <see cref="IAsyncDocumentSession"/> will not be registered,
     /// as a database context is required for session creation.</param>
+    /// <param name="certificate">Optional. The certificate for the server.</param>
     public static void AddRavenDBClient(
         this IHostApplicationBuilder builder,
         string[] connectionUrls,
-        string? databaseName)
+        string? databaseName,
+        X509Certificate2? certificate = null)
     {
         ValidateSettings(builder, connectionUrls);
 
         var settings = new RavenDBSettings(connectionUrls, databaseName);
+        if (certificate != null)
+            settings.Certificate = certificate;
+
         builder.AddRavenDBClient(settings, serviceKey: null);
     }
 
@@ -62,14 +68,14 @@ public static class RavenDBClientExtension
     /// instances for connecting to an existing or new RavenDB database with RavenDB.Client, identified by a unique service key.
     /// </summary>
     /// <param name="builder">The <see cref="IHostApplicationBuilder"/> used to add services.</param>
-    /// <param name="settings">The settings required to configure the <see cref="IDocumentStore"/>.</param>
     /// <param name="serviceKey">A unique key that identifies this instance of the RavenDB client service.</param>
+    /// <param name="settings">The settings required to configure the <see cref="IDocumentStore"/>.</param>
     /// <remarks>Note: If <see cref="RavenDBSettings.DatabaseName"/> is not specified and <see cref="RavenDBSettings.CreateDatabase"/>
     /// is set to 'false', <see cref="IDocumentSession"/> and <see cref="IAsyncDocumentSession"/> will not be registered.</remarks>
     public static void AddKeyedRavenDBClient(
         this IHostApplicationBuilder builder,
-        RavenDBSettings settings,
-        object serviceKey)
+        object serviceKey,
+        RavenDBSettings settings)
     {
         ValidateSettings(builder, settings);
 
@@ -81,18 +87,20 @@ public static class RavenDBClientExtension
     /// instances for connecting to an existing or new RavenDB database with RavenDB.Client, identified by a unique service key.
     /// </summary>
     /// <param name="builder">The <see cref="IHostApplicationBuilder"/> used to add services.</param>
+    /// <param name="serviceKey">A unique key that identifies this instance of the RavenDB client service.</param>
     /// <param name="connectionUrls">The URLs of the RavenDB cluster nodes to connect to.</param>
     /// <param name="databaseName">Optional: the name of an existing database to connect to.
     /// If not specified, <see cref="IDocumentSession"/> and <see cref="IAsyncDocumentSession"/> will not be registered,
     /// as a database context is required for session creation.</param>
-    /// <param name="serviceKey">A unique key that identifies this instance of the RavenDB client service.</param>
+    /// <param name="certificate">Optional. The certificate for the server.</param>
     /// <remarks>Note: If <see cref="RavenDBSettings.DatabaseName"/> is not specified and <see cref="RavenDBSettings.CreateDatabase"/>
     /// is set to 'false', <see cref="IDocumentSession"/> and <see cref="IAsyncDocumentSession"/> will not be registered.</remarks>
     public static void AddKeyedRavenDBClient(
         this IHostApplicationBuilder builder,
+        object serviceKey,
         string[] connectionUrls,
         string? databaseName,
-        object serviceKey)
+        X509Certificate2? certificate = null)
     {
         ValidateSettings(builder, connectionUrls);
 
