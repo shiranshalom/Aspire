@@ -21,19 +21,39 @@ public class AddRavenDBTests
     public void AddRavenServerAndDatabaseResource()
     {
         var appBuilder = DistributedApplication.CreateBuilder();
-        appBuilder.AddRavenDB("ravenServer").AddDatabase(name: "ravenDatabase",databaseName: "TestDatabase");
+        appBuilder.AddRavenDB("ravenServer").AddDatabase(name: "ravenDatabase", databaseName: "TestDatabase");
         using var app = appBuilder.Build();
 
         var appModel = app.Services.GetRequiredService<DistributedApplicationModel>();
 
         var serverResource = Assert.Single(appModel.Resources.OfType<RavenDBServerResource>());
         var databaseResource = Assert.Single(appModel.Resources.OfType<RavenDBDatabaseResource>());
-        
+
         Assert.Equal("ravenServer", serverResource.Name);
         Assert.Equal("ravenDatabase", databaseResource.Name);
         Assert.Equal("TestDatabase", databaseResource.DatabaseName);
         Assert.True(serverResource.Databases.TryGetValue("ravenDatabase", out var databaseName));
         Assert.Equal("TestDatabase", databaseName);
+    }
+
+    [Fact]
+    public void VerifyNonDefaultImageTag()
+    {
+        var tag = "windows-latest-lts";
+
+        var builder = DistributedApplication.CreateBuilder();
+        builder.AddRavenDB("raven").WithImageTag(tag);
+
+        using var app = builder.Build();
+
+        var appModel = app.Services.GetRequiredService<DistributedApplicationModel>();
+
+        var resource = Assert.Single(appModel.Resources.OfType<RavenDBServerResource>());
+
+        Assert.True(resource.TryGetAnnotationsOfType<ContainerImageAnnotation>(out var annotations));
+        var annotation = Assert.Single(annotations);
+        Assert.NotNull(annotation.Tag);
+        Assert.Equal(tag, annotation.Tag);
     }
 
     [Fact]

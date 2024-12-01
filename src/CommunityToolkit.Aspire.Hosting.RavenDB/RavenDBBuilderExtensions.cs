@@ -1,9 +1,7 @@
 ﻿using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Utils;
 using CommunityToolkit.Aspire.Hosting.RavenDB;
-using HealthChecks.RavenDB;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Aspire.Hosting;
 
@@ -45,20 +43,9 @@ public static class RavenDBBuilderExtensions
         });
 
         var healthCheckKey = $"{name}_check";
-
-        // TODO: Use AddRavenDB (Microsoft.Extensions.DependencyInjection).
-        // We should create an overload with 'Func<IServiceProvider, IHealthCheck> factory' parameter 
-        // for using the connectionString once it is available 
-        
-        //builder.Services.AddHealthChecks().AddRavenDB(sp => sp.Urls = new []{ connectionString ?? throw new InvalidOperationException("Connection string is unavailable") },
-        //name: healthCheckKey);
-
-        builder.Services.AddHealthChecks().Add(new HealthCheckRegistration(
-            healthCheckKey,
-            _ => new RavenDBHealthCheck(new RavenDBOptions { Urls = new[] { connectionString ?? throw new InvalidOperationException("Connection string is unavailable") } }),
-            failureStatus: default,
-            tags: default,
-            timeout: default));
+        builder.Services.AddHealthChecks()
+            .AddRavenDB(sp => connectionString ?? throw new InvalidOperationException("Connection string is unavailable"),
+                name: healthCheckKey);
 
         return builder
             .AddResource(serverResource)
@@ -115,27 +102,10 @@ public static class RavenDBBuilderExtensions
         });
 
         var healthCheckKey = $"{name}_check";
-
-        // TODO: Use AddRavenDB (Microsoft.Extensions.DependencyInjection).
-        // We should create an overload with 'Func<IServiceProvider, IHealthCheck> factory' parameter 
-        // for using the connectionString once it is available 
-
-        //builder.ApplicationBuilder.Services.AddHealthChecks().AddRavenDB(options =>
-        //{
-        //    options.Urls = new[] { connectionString ?? throw new InvalidOperationException("Connection string is unavailable") };
-        //    options.Database = databaseName;
-        //}, name: healthCheckKey);
-
-        builder.ApplicationBuilder.Services.AddHealthChecks().Add(new HealthCheckRegistration(
-            healthCheckKey,
-            _ => new RavenDBHealthCheck(new RavenDBOptions
-            {
-                Urls = new[] { connectionString ?? throw new InvalidOperationException("Connection string is unavailable") },
-                Database = databaseName
-            }),
-            failureStatus: default,
-            tags: default,
-            timeout: default));
+        builder.ApplicationBuilder.Services.AddHealthChecks()
+            .AddRavenDB(sp => connectionString ?? throw new InvalidOperationException("Connection string is unavailable"),
+                databaseName: databaseName,
+                name: healthCheckKey);
 
         return builder.ApplicationBuilder
             .AddResource(databaseResource);

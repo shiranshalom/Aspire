@@ -1,8 +1,9 @@
 ﻿using Aspire.Components.Common.Tests;
+using CommunityToolkit.Aspire.RavenDB.Client;
 using CommunityToolkit.Aspire.Testing;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Raven.Client.Documents;
-using Raven.Client.ServerWide;
-using Raven.Client.ServerWide.Operations;
 
 namespace CommunityToolkit.Aspire.Hosting.RavenDB.Tests;
 
@@ -28,14 +29,19 @@ public class AppHostTests(AspireIntegrationTestFixture<Projects.RavenDB_AppHost>
         var url = await serverResource.ConnectionStringExpression.GetValueAsync(cancellationToken.Token);
         Assert.NotNull(url);
         Assert.Equal(connectionString.OriginalString, url);
+        Assert.Equal("TestDatabase", dbResource.DatabaseName);
 
-        using var documentStore = new DocumentStore
-        {
-            Urls = new[] { url }, // Container URL
-            Database = dbResource.DatabaseName
-        };
-        documentStore.Initialize();
-        await documentStore.Maintenance.Server.SendAsync(new CreateDatabaseOperation(new DatabaseRecord(dbResource.DatabaseName)), cancellationToken.Token);
+        // Create RavenDB Client
+
+        var clientBuilder = Host.CreateApplicationBuilder();
+        clientBuilder.Configuration.AddInMemoryCollection([
+            new KeyValuePair<string, string?>($"ConnectionStrings:{resourceName}", url)
+        ]);
+
+        clientBuilder.AddRavenDBClient(new RavenDBSettings(urls: new[] { url }, databaseName: "TestDatabase") { CreateDatabase = true });
+        var host = clientBuilder.Build();
+
+        using var documentStore = host.Services.GetRequiredService<IDocumentStore>();
 
         using (var session = documentStore.OpenAsyncSession())
         {
