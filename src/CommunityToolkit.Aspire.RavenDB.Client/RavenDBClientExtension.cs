@@ -202,7 +202,7 @@ public static class RavenDBClientExtension
         {
             Urls = ravenDbSettings.Urls,
             Database = ravenDbSettings.DatabaseName,
-            Certificate = ravenDbSettings.GetCertificate(),
+            Certificate = ravenDbSettings.GetCertificate()
         };
 
         ravenDbSettings.ModifyDocumentStore?.Invoke(documentStore);

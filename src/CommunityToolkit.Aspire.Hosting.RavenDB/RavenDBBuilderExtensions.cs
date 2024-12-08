@@ -12,20 +12,67 @@ public static class RavenDBBuilderExtensions
 {
     /// <summary>
     /// Adds a RavenDB server resource to the application model. A container is used for local development.
+    /// This overload simplifies the configuration by creating an unsecured RavenDB server resource with default settings.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// <strong>Note:</strong> When using this method, a valid RavenDB license must be provided as an environment variable
+    /// before calling the <see cref="IDistributedApplicationBuilder.Build"/> and <see cref="DistributedApplication.Run"/> methods.
+    /// You can set the license by calling:
+    /// <code>
+    /// builder.WithEnvironment("RAVEN_License", "{your license}");
+    /// </code>
+    /// </para>
+    /// </remarks>
+    /// <param name="builder">The <see cref="IDistributedApplicationBuilder"/> to which the resource is added.</param>
+    /// <param name="name">The name of the RavenDB server resource.</param>
+    /// <returns>A resource builder for the newly added RavenDB server resource.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="builder"/> is null.</exception>
+    public static IResourceBuilder<RavenDBServerResource> AddRavenDB(this IDistributedApplicationBuilder builder, [ResourceName] string name)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        return builder.AddRavenDB(name, RavenDBServerSettings.Unsecured());
+    }
+
+    /// <summary>
+    /// Adds a RavenDB server resource to the application model. A container is used for local development.
+    /// This version of the package defaults to the <inheritdoc cref="RavenDBContainerImageTags.Tag"/> tag of the <inheritdoc cref="RavenDBContainerImageTags.Image"/> container image.
+    /// This overload simplifies configuration by accepting a <see cref="RavenDBServerSettings"/> object to specify server settings.
+    /// </summary>
+    /// <param name="builder">The <see cref="IDistributedApplicationBuilder"/></param>
+    /// <param name="name">The name of the RavenDB server resource.</param>
+    /// <param name="serverSettings">An object of type <see cref="RavenDBServerSettings"/> containing configuration details for the RavenDB server, 
+    /// such as whether the server should use HTTPS, RavenDB license and other relevant settings.</param>
+    /// <returns>A resource builder for the newly added RavenDB server resource.</returns>
+    /// <exception cref="DistributedApplicationException">Thrown when the connection string cannot be retrieved during configuration.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the connection string is unavailable.</exception>
+    public static IResourceBuilder<RavenDBServerResource> AddRavenDB(this IDistributedApplicationBuilder builder,
+        [ResourceName] string name,
+        RavenDBServerSettings serverSettings)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+
+        var environmentVariables = GetEnvironmentVariablesFromServerSettings(serverSettings);
+        return builder.AddRavenDB(name, secured: serverSettings is RavenDBSecuredServerSettings, environmentVariables);
+    }
+
+    /// <summary>
+    /// Adds a RavenDB server resource to the application model. A container is used for local development.
     /// This version of the package defaults to the <inheritdoc cref="RavenDBContainerImageTags.Tag"/> tag of the <inheritdoc cref="RavenDBContainerImageTags.Image"/> container image.
     /// </summary>
     /// <param name="builder">The <see cref="IDistributedApplicationBuilder"/></param>
     /// <param name="name">The name of the RavenDB server resource.</param>
     /// <param name="secured">Indicates whether the server connection should be secured (HTTPS). Defaults to false.</param>
-    /// <param name="environmentVariables">Optional environment variables to configure the RavenDB server.</param>
+    /// <param name="environmentVariables">The environment variables to configure the RavenDB server.</param>
     /// <param name="port">Optional port for the server. If not provided, defaults to the container's internal port (8080).</param>
     /// <returns>A resource builder for the newly added RavenDB server resource.</returns>
     /// <exception cref="DistributedApplicationException">Thrown when the connection string cannot be retrieved during configuration.</exception>
     /// <exception cref="InvalidOperationException">Thrown when the connection string is unavailable.</exception>
     public static IResourceBuilder<RavenDBServerResource> AddRavenDB(this IDistributedApplicationBuilder builder,
     [ResourceName] string name,
-    bool secured = false,
-    Dictionary<string, object>? environmentVariables = null,
+    bool secured,
+    Dictionary<string, object> environmentVariables,
     int? port = null)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -49,11 +96,39 @@ public static class RavenDBBuilderExtensions
 
         return builder
             .AddResource(serverResource)
-            .WithEndpoint(port: port, targetPort: 8080, scheme: serverResource.PrimaryEndpoint.EndpointName)
+            .WithEndpoint(port: port, targetPort: secured ? 443 : 8080, scheme: serverResource.PrimaryEndpointName, name: serverResource.PrimaryEndpointName, isProxied: false)
             .WithImage(RavenDBContainerImageTags.Image)
             .WithImageRegistry(RavenDBContainerImageTags.Registry)
             .WithEnvironment(context => ConfigureEnvironmentVariables(context, environmentVariables))
             .WithHealthCheck(healthCheckKey);
+    }
+
+    private static Dictionary<string, object> GetEnvironmentVariablesFromServerSettings(RavenDBServerSettings serverSettings)
+    {
+        var environmentVariables = new Dictionary<string, object>
+        {
+            { "RAVEN_Setup_Mode", serverSettings.SetupMode.ToString() }
+        };
+
+        if (serverSettings.LicensingOptions != null)
+        {
+            environmentVariables.TryAdd("RAVEN_License_Eula_Accepted", serverSettings.LicensingOptions.EulaAccepted.ToString());
+            environmentVariables.TryAdd("RAVEN_License", serverSettings.LicensingOptions.License);
+        }
+
+        if (serverSettings.ServerUrl != null)
+            environmentVariables.TryAdd("RAVEN_ServerUrl", serverSettings.ServerUrl);
+
+        if (serverSettings is RavenDBSecuredServerSettings securedServerSettings)
+        {
+            environmentVariables.TryAdd("RAVEN_PublicServerUrl", securedServerSettings.PublicServerUrl);
+            environmentVariables.TryAdd("RAVEN_Security_Certificate_Path", securedServerSettings.CertificatePath);
+            
+            if (securedServerSettings.CertificatePassword != null)
+                environmentVariables.TryAdd("RAVEN_Security_Certificate_Password", securedServerSettings.CertificatePassword);
+        }
+
+        return environmentVariables;
     }
 
     private static void ConfigureEnvironmentVariables(EnvironmentCallbackContext context, Dictionary<string, object>? environmentVariables = null)

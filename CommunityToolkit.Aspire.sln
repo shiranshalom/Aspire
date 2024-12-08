@@ -199,6 +199,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityToolkit.Aspire.Hos
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RavenDB.AppHost", "tests-app-hosts\RavenDB.AppHost\RavenDB.AppHost\RavenDB.AppHost.csproj", "{9164EC65-08BD-4C8F-A707-3F300E1E5C74}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RavenDBSecured.AppHost", "tests-app-hosts\RavenDBSecured.AppHost\RavenDBSecured.AppHost.csproj", "{45C4592F-4227-425F-BC97-F703BAC249B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RavenDBSecured.ApiService", "tests-app-hosts\RavenDBSecured.ApiService\RavenDBSecured.ApiService.csproj", "{C294142B-450D-4FE4-A871-83B16116DF71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -521,6 +525,14 @@ Global
 		{9164EC65-08BD-4C8F-A707-3F300E1E5C74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9164EC65-08BD-4C8F-A707-3F300E1E5C74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9164EC65-08BD-4C8F-A707-3F300E1E5C74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45C4592F-4227-425F-BC97-F703BAC249B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45C4592F-4227-425F-BC97-F703BAC249B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45C4592F-4227-425F-BC97-F703BAC249B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45C4592F-4227-425F-BC97-F703BAC249B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C294142B-450D-4FE4-A871-83B16116DF71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C294142B-450D-4FE4-A871-83B16116DF71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C294142B-450D-4FE4-A871-83B16116DF71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C294142B-450D-4FE4-A871-83B16116DF71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -621,6 +633,8 @@ Global
 		{A7852D8B-BE38-4D95-A8D6-3B6F96F94A5A} = {414151D4-7009-4E78-A5C6-D99EBD1E67D1}
 		{35B51242-F576-4CCE-BA29-712A80749CB1} = {899F0713-7FC6-4750-BAFC-AC650B35B453}
 		{9164EC65-08BD-4C8F-A707-3F300E1E5C74} = {79CBF217-CED1-4BB2-9A72-37D2429F83B8}
+		{45C4592F-4227-425F-BC97-F703BAC249B2} = {79CBF217-CED1-4BB2-9A72-37D2429F83B8}
+		{C294142B-450D-4FE4-A871-83B16116DF71} = {79CBF217-CED1-4BB2-9A72-37D2429F83B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {08B1D4B8-D2C5-4A64-BB8B-E1A2B29525F0}
