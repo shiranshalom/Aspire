@@ -97,7 +97,7 @@ public static class RavenDBBuilderExtensions
         return builder
             .AddResource(serverResource)
             .WithEndpoint(port: port, targetPort: secured ? 443 : 8080, scheme: serverResource.PrimaryEndpointName, name: serverResource.PrimaryEndpointName, isProxied: false)
-            .WithImage(RavenDBContainerImageTags.Image)
+            .WithImage(RavenDBContainerImageTags.Image, RavenDBContainerImageTags.Tag)
             .WithImageRegistry(RavenDBContainerImageTags.Registry)
             .WithEnvironment(context => ConfigureEnvironmentVariables(context, environmentVariables))
             .WithHealthCheck(healthCheckKey);
