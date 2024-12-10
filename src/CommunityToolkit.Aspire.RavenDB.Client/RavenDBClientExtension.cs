@@ -54,11 +54,11 @@ public static class RavenDBClientExtension
         string? databaseName,
         X509Certificate2? certificate = null)
     {
-        ValidateSettings(builder, connectionUrls);
-
         var settings = new RavenDBSettings(connectionUrls, databaseName);
         if (certificate != null)
             settings.Certificate = certificate;
+
+        ValidateSettings(builder, settings);
 
         builder.AddRavenDBClient(settings, serviceKey: null);
     }
@@ -102,9 +102,12 @@ public static class RavenDBClientExtension
         string? databaseName,
         X509Certificate2? certificate = null)
     {
-        ValidateSettings(builder, connectionUrls);
-
         var settings = new RavenDBSettings(connectionUrls, databaseName);
+        if (certificate != null)
+            settings.Certificate = certificate;
+
+        ValidateSettings(builder, settings);
+
         builder.AddRavenDBClient(settings, serviceKey);
     }
 
@@ -113,8 +116,6 @@ public static class RavenDBClientExtension
         RavenDBSettings settings,
         object? serviceKey)
     {
-        ArgumentNullException.ThrowIfNull(builder);
-
         var documentStore = CreateRavenClient(settings);
 
         if (serviceKey is null)
@@ -155,7 +156,7 @@ public static class RavenDBClientExtension
             return;
 
         // AddTransient creates new instance per request/usage which is ideal for document sessions
-       
+
         if (serviceKey is null)
         {
             builder.Services.AddTransient<IDocumentSession>(provider =>
@@ -208,7 +209,7 @@ public static class RavenDBClientExtension
         ravenDbSettings.ModifyDocumentStore?.Invoke(documentStore);
 
         documentStore.Initialize();
-        
+
         if (ravenDbSettings.CreateDatabase)
         {
             var databaseRecord = new DatabaseRecord(ravenDbSettings.DatabaseName);
@@ -229,23 +230,31 @@ public static class RavenDBClientExtension
         RavenDBSettings settings)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        ArgumentNullException.ThrowIfNull(settings.Urls);
 
-        if (settings.Urls.Length == 0)
-            throw new InvalidDataException("At least one connection URL must be provided in 'RavenDBSettings.Urls'.");
+        if (settings.Urls == null || settings.Urls.Length == 0)
+            throw new ArgumentNullException(nameof(settings.Urls), "At least one connection URL must be provided.");
 
         if (settings.CreateDatabase && string.IsNullOrWhiteSpace(settings.DatabaseName))
-            throw new InvalidDataException("A database name must be specified in 'RavenDBSettings.DatabaseName' when 'RavenDBSettings.CreateDatabase' is set to true.");
-    }
+            throw new ArgumentNullException(nameof(settings.DatabaseName), "A database name must be specified in 'RavenDBSettings.DatabaseName' " +
+                                                                           "when 'RavenDBSettings.CreateDatabase' is set to true.");
 
-    private static void ValidateSettings(
-        IHostApplicationBuilder builder,
-        string[] connectionStrings)
-    {
-        ArgumentNullException.ThrowIfNull(builder);
-        ArgumentNullException.ThrowIfNull(connectionStrings);
+        foreach (var url in settings.Urls)
+        {
+            if (IsValidUrl(url, out var uri) == false)
+                throw new ArgumentException($"The provided URL '{url}' is invalid. Please provide a valid HTTP or HTTPS URL.");
 
-        if (connectionStrings.Length == 0)
-            throw new InvalidDataException("At least one connection URL must be provided in 'connectionStrings'.");
+            if (uri!.Scheme == Uri.UriSchemeHttps)
+            {
+                if (string.IsNullOrEmpty(settings.CertificatePath) && settings.Certificate == null)
+                    throw new ArgumentNullException(nameof(settings.Certificate), "A valid certificate must be provided in 'RavenDBSettings.Certificate' " +
+                        "or a certificate path in 'RavenDBSettings.CertificatePath' when using HTTPS.");
+            }
+        }
+
+        bool IsValidUrl(string url, out Uri? uriResult)
+        {
+            return Uri.TryCreate(url, UriKind.Absolute, out uriResult)
+                   && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+        }
     }
 }
