@@ -3,6 +3,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
+using Raven.Client.Exceptions;
 using Raven.Client.Http;
 
 namespace CommunityToolkit.Aspire.RavenDB.Client.Tests;
@@ -160,6 +161,23 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
     }
 
     [Fact]
+    public void AddRavenDbClientShouldThrowOnDatabaseAlreadyExist()
+    {
+        var databaseName = Guid.NewGuid().ToString("N");
+        var settings = GetDefaultSettings(databaseName);
+
+        var builder = CreateBuilder();
+
+        Assert.Throws<ConcurrencyException>(() =>
+        {
+            builder.AddRavenDBClient(settings);
+            builder.AddRavenDBClient(settings);
+
+            using var host = builder.Build();
+        });
+    }
+
+    [Fact]
     public void AddKeyedRavenDbClientShouldWork_Create2NewDatabases()
     {
         var databaseName1 = Guid.NewGuid().ToString("N");
@@ -253,7 +271,7 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
     public async Task AddRavenDbClient_HealthCheckShouldBeRegisteredWhenEnabled()
     {
         var databaseName = Guid.NewGuid().ToString("N");
-        var settings = new RavenDBSettings(new[] { DefaultConnectionString }, databaseName)
+        var settings = new RavenDBClientSettings(new[] { DefaultConnectionString }, databaseName)
         {
             CreateDatabase = true,
             DisableHealthChecks = false
@@ -276,7 +294,7 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
     public void AddRavenDbClient_HealthCheckShouldNotBeRegisteredWhenDisabled()
     {
         var databaseName = Guid.NewGuid().ToString("N");
-        var settings = new RavenDBSettings(new[] { DefaultConnectionString }, databaseName)
+        var settings = new RavenDBClientSettings(new[] { DefaultConnectionString }, databaseName)
         {
             CreateDatabase = true,
             DisableHealthChecks = true
@@ -296,7 +314,7 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
     public async Task AddKeyedRavenDbClient_HealthCheckShouldBeRegisteredWhenEnabled()
     {
         var databaseName = Guid.NewGuid().ToString("N");
-        var settings = new RavenDBSettings(new[] { DefaultConnectionString }, databaseName)
+        var settings = new RavenDBClientSettings(new[] { DefaultConnectionString }, databaseName)
         {
             CreateDatabase = true,
             DisableHealthChecks = false
@@ -319,7 +337,7 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
     public void AddKeyedRavenDbClient_HealthCheckShouldNotBeRegisteredWhenDisabled()
     {
         var databaseName = Guid.NewGuid().ToString("N");
-        var settings = new RavenDBSettings(new[] { DefaultConnectionString }, databaseName)
+        var settings = new RavenDBClientSettings(new[] { DefaultConnectionString }, databaseName)
         {
             CreateDatabase = true,
             DisableHealthChecks = true
@@ -339,7 +357,7 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
     public void AddRavenDbClient_ModifyDocumentStore()
     {
         var databaseName = Guid.NewGuid().ToString("N");
-        var settings = new RavenDBSettings(new[] { DefaultConnectionString }, databaseName)
+        var settings = new RavenDBClientSettings(new[] { DefaultConnectionString }, databaseName)
         {
             CreateDatabase = true,
             ModifyDocumentStore = store =>
@@ -365,7 +383,7 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
     public void AddKeyedRavenDbClient_ModifyDocumentStore()
     {
         var databaseName = Guid.NewGuid().ToString("N");
-        var settings = new RavenDBSettings(new[] { DefaultConnectionString }, databaseName)
+        var settings = new RavenDBClientSettings(new[] { DefaultConnectionString }, databaseName)
         {
             CreateDatabase = true,
             ModifyDocumentStore = store =>
@@ -387,9 +405,9 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
         Assert.Equal(99, documentStore.Conventions.MaxNumberOfRequestsPerSession);
     }
 
-    private RavenDBSettings GetDefaultSettings(string? databaseName = null, bool shouldCreateDatabase = true)
+    private RavenDBClientSettings GetDefaultSettings(string? databaseName = null, bool shouldCreateDatabase = true)
     {
-        return new RavenDBSettings(new[] { DefaultConnectionString }, databaseName)
+        return new RavenDBClientSettings(new[] { DefaultConnectionString }, databaseName)
         {
             CreateDatabase = shouldCreateDatabase
         };

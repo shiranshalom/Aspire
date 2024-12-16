@@ -7,14 +7,14 @@ namespace CommunityToolkit.Aspire.RavenDB.Client;
 /// <summary>
 /// Provides the client configuration settings for connecting to a RavenDB database.
 /// </summary>
-public sealed class RavenDBSettings
+public sealed class RavenDBClientSettings
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="RavenDBSettings"/> class with the specified connection URLs and optional database name.
+    /// Initializes a new instance of the <see cref="RavenDBClientSettings"/> class with the specified connection URLs and optional database name.
     /// </summary>
     /// <param name="urls">The URLs of the RavenDB server nodes.</param>
     /// <param name="databaseName">The optional name of the database to connect to.</param>
-    public RavenDBSettings(string[] urls, string? databaseName = null)
+    public RavenDBClientSettings(string[] urls, string? databaseName = null)
     {
         ArgumentNullException.ThrowIfNull(urls);
 
@@ -80,7 +80,7 @@ public sealed class RavenDBSettings
     /// </summary>
     /// <returns>An <see cref="X509Certificate2"/> instance if the <see cref="CertificatePath"/> is specified;
     /// otherwise, <see langword="null"/>.</returns>
-    public X509Certificate2? GetCertificate()
+    internal X509Certificate2? GetCertificate()
     {
         if (Certificate != null)
             return Certificate;

@@ -40,7 +40,7 @@ public class AppHostTests(AspireIntegrationTestFixture<Projects.RavenDB_AppHost>
             new KeyValuePair<string, string?>($"ConnectionStrings:{serverResource.Name}", url)
         ]);
 
-        clientBuilder.AddRavenDBClient(new RavenDBSettings(urls: new[] { url }, databaseName: "TestDatabase") { CreateDatabase = true });
+        clientBuilder.AddRavenDBClient(new RavenDBClientSettings(urls: new[] { url }, databaseName: "TestDatabase") { CreateDatabase = true });
         var host = clientBuilder.Build();
 
         using var documentStore = host.Services.GetRequiredService<IDocumentStore>();

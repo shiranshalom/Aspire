@@ -23,7 +23,7 @@ public static class RavenDBClientExtension
     /// <param name="settings">The settings required to configure the <see cref="IDocumentStore"/>.</param>
     /// <remarks>Notes:
     /// <list type="bullet">
-    /// <item><description>If <see cref="RavenDBSettings.DatabaseName"/> is not specified and <see cref="RavenDBSettings.CreateDatabase"/> is set to 'false',
+    /// <item><description>If <see cref="RavenDBClientSettings.DatabaseName"/> is not specified and <see cref="RavenDBClientSettings.CreateDatabase"/> is set to 'false',
     /// <see cref="IDocumentSession"/> and <see cref="IAsyncDocumentSession"/> will not be registered.</description></item>
     /// <item><description>The <see cref="IDocumentStore"/> is registered as a singleton, meaning a single instance is shared throughout the application's lifetime,
     /// while <see cref="IDocumentSession"/> and <see cref="IAsyncDocumentSession"/> are registered per request to ensure short-lived session instances for each use.</description></item>
@@ -31,7 +31,7 @@ public static class RavenDBClientExtension
     /// </remarks>
     public static void AddRavenDBClient(
         this IHostApplicationBuilder builder,
-        RavenDBSettings settings)
+        RavenDBClientSettings settings)
     {
         ValidateSettings(builder, settings);
 
@@ -54,7 +54,7 @@ public static class RavenDBClientExtension
         string? databaseName,
         X509Certificate2? certificate = null)
     {
-        var settings = new RavenDBSettings(connectionUrls, databaseName);
+        var settings = new RavenDBClientSettings(connectionUrls, databaseName);
         if (certificate != null)
             settings.Certificate = certificate;
 
@@ -70,12 +70,12 @@ public static class RavenDBClientExtension
     /// <param name="builder">The <see cref="IHostApplicationBuilder"/> used to add services.</param>
     /// <param name="serviceKey">A unique key that identifies this instance of the RavenDB client service.</param>
     /// <param name="settings">The settings required to configure the <see cref="IDocumentStore"/>.</param>
-    /// <remarks>Note: If <see cref="RavenDBSettings.DatabaseName"/> is not specified and <see cref="RavenDBSettings.CreateDatabase"/>
+    /// <remarks>Note: If <see cref="RavenDBClientSettings.DatabaseName"/> is not specified and <see cref="RavenDBClientSettings.CreateDatabase"/>
     /// is set to 'false', <see cref="IDocumentSession"/> and <see cref="IAsyncDocumentSession"/> will not be registered.</remarks>
     public static void AddKeyedRavenDBClient(
         this IHostApplicationBuilder builder,
         object serviceKey,
-        RavenDBSettings settings)
+        RavenDBClientSettings settings)
     {
         ValidateSettings(builder, settings);
 
@@ -93,7 +93,7 @@ public static class RavenDBClientExtension
     /// If not specified, <see cref="IDocumentSession"/> and <see cref="IAsyncDocumentSession"/> will not be registered,
     /// as a database context is required for session creation.</param>
     /// <param name="certificate">Optional. The certificate for the server.</param>
-    /// <remarks>Note: If <see cref="RavenDBSettings.DatabaseName"/> is not specified and <see cref="RavenDBSettings.CreateDatabase"/>
+    /// <remarks>Note: If <see cref="RavenDBClientSettings.DatabaseName"/> is not specified and <see cref="RavenDBClientSettings.CreateDatabase"/>
     /// is set to 'false', <see cref="IDocumentSession"/> and <see cref="IAsyncDocumentSession"/> will not be registered.</remarks>
     public static void AddKeyedRavenDBClient(
         this IHostApplicationBuilder builder,
@@ -102,7 +102,7 @@ public static class RavenDBClientExtension
         string? databaseName,
         X509Certificate2? certificate = null)
     {
-        var settings = new RavenDBSettings(connectionUrls, databaseName);
+        var settings = new RavenDBClientSettings(connectionUrls, databaseName);
         if (certificate != null)
             settings.Certificate = certificate;
 
@@ -113,7 +113,7 @@ public static class RavenDBClientExtension
 
     private static void AddRavenDBClient(
         this IHostApplicationBuilder builder,
-        RavenDBSettings settings,
+        RavenDBClientSettings settings,
         object? serviceKey)
     {
         var documentStore = CreateRavenClient(settings);
@@ -178,7 +178,7 @@ public static class RavenDBClientExtension
     private static void AddHealthCheck(
         this IHostApplicationBuilder builder,
         string healthCheckName,
-        RavenDBSettings settings)
+        RavenDBClientSettings settings)
     {
         if (settings.DisableHealthChecks)
             return;
@@ -197,22 +197,22 @@ public static class RavenDBClientExtension
                 settings.HealthCheckTimeout > 0 ? TimeSpan.FromMilliseconds(settings.HealthCheckTimeout.Value) : null));
     }
 
-    private static IDocumentStore CreateRavenClient(RavenDBSettings ravenDbSettings)
+    private static IDocumentStore CreateRavenClient(RavenDBClientSettings ravenDbClientSettings)
     {
         var documentStore = new DocumentStore()
         {
-            Urls = ravenDbSettings.Urls,
-            Database = ravenDbSettings.DatabaseName,
-            Certificate = ravenDbSettings.GetCertificate()
+            Urls = ravenDbClientSettings.Urls,
+            Database = ravenDbClientSettings.DatabaseName,
+            Certificate = ravenDbClientSettings.GetCertificate()
         };
 
-        ravenDbSettings.ModifyDocumentStore?.Invoke(documentStore);
+        ravenDbClientSettings.ModifyDocumentStore?.Invoke(documentStore);
 
         documentStore.Initialize();
 
-        if (ravenDbSettings.CreateDatabase)
+        if (ravenDbClientSettings.CreateDatabase)
         {
-            var databaseRecord = new DatabaseRecord(ravenDbSettings.DatabaseName);
+            var databaseRecord = new DatabaseRecord(ravenDbClientSettings.DatabaseName);
             documentStore.Maintenance.Server.Send(new CreateDatabaseOperation(databaseRecord));
         }
 
@@ -227,7 +227,7 @@ public static class RavenDBClientExtension
 
     private static void ValidateSettings(
         IHostApplicationBuilder builder,
-        RavenDBSettings settings)
+        RavenDBClientSettings settings)
     {
         ArgumentNullException.ThrowIfNull(builder);
 
@@ -235,8 +235,8 @@ public static class RavenDBClientExtension
             throw new ArgumentNullException(nameof(settings.Urls), "At least one connection URL must be provided.");
 
         if (settings.CreateDatabase && string.IsNullOrWhiteSpace(settings.DatabaseName))
-            throw new ArgumentNullException(nameof(settings.DatabaseName), "A database name must be specified in 'RavenDBSettings.DatabaseName' " +
-                                                                           "when 'RavenDBSettings.CreateDatabase' is set to true.");
+            throw new ArgumentNullException(nameof(settings.DatabaseName), "A database name must be specified in 'RavenDBClientSettings.DatabaseName' " +
+                                                                           "when 'RavenDBClientSettings.CreateDatabase' is set to true.");
 
         foreach (var url in settings.Urls)
         {
@@ -246,8 +246,8 @@ public static class RavenDBClientExtension
             if (uri!.Scheme == Uri.UriSchemeHttps)
             {
                 if (string.IsNullOrEmpty(settings.CertificatePath) && settings.Certificate == null)
-                    throw new ArgumentNullException(nameof(settings.Certificate), "A valid certificate must be provided in 'RavenDBSettings.Certificate' " +
-                        "or a certificate path in 'RavenDBSettings.CertificatePath' when using HTTPS.");
+                    throw new ArgumentNullException(nameof(settings.Certificate), "A valid certificate must be provided in 'RavenDBClientSettings.Certificate' " +
+                        "or a certificate path in 'RavenDBClientSettings.CertificatePath' when using HTTPS.");
             }
         }
 
