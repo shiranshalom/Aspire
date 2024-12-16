@@ -15,7 +15,7 @@ public class RavenDBServerSettings
     /// <summary>
     /// The setup mode for the server. This determines whether the server is secured, uses Let's Encrypt, or is unsecured.
     /// </summary>
-    public SetupMode SetupMode { get; set; }
+    public SetupMode SetupMode { get; private set; }
 
     /// <summary>
     /// Gets the licensing options configured for the server.
@@ -30,21 +30,36 @@ public class RavenDBServerSettings
     /// <summary>
     /// Creates a secured RavenDB server settings object with the specified configuration.
     /// </summary>
-    /// <param name="setupMode">The setup mode to use. Must be <see cref="SetupMode.LetsEncrypt"/> or <see cref="SetupMode.Secured"/>.</param>
     /// <param name="domainUrl">The public domain URL for the server.</param>
     /// <param name="certificatePath">The path to the certificate file.</param>
     /// <param name="certificatePassword">The password for the certificate file, if required. Optional.</param>
     /// <param name="serverUrl">The optional server URL.</param>
-    public static RavenDBServerSettings Secured(SetupMode setupMode, string domainUrl, string certificatePath,
+    public static RavenDBServerSettings Secured(string domainUrl, string certificatePath,
         string? certificatePassword = null, string? serverUrl = null)
     {
-        if (setupMode == SetupMode.None || setupMode == SetupMode.Unsecured)
-            throw new InvalidDataException(
-                $"Setup mode must be of type: '{SetupMode.LetsEncrypt}' or '{SetupMode.Secured}'");
-
         return new RavenDBSecuredServerSettings
         {
-            SetupMode = setupMode,
+            SetupMode = SetupMode.Secured,
+            ServerUrl = serverUrl,
+            CertificatePath = certificatePath,
+            CertificatePassword = certificatePassword,
+            PublicServerUrl = domainUrl
+        };
+    }
+
+    /// <summary>
+    /// Creates a secured RavenDB server settings object with the specified configuration.
+    /// </summary>
+    /// <param name="domainUrl">The public domain URL for the server.</param>
+    /// <param name="certificatePath">The path to the certificate file.</param>
+    /// <param name="certificatePassword">The password for the certificate file, if required. Optional.</param>
+    /// <param name="serverUrl">The optional server URL.</param>
+    public static RavenDBServerSettings SecuredWithLetsEncrypt(string domainUrl, string certificatePath,
+        string? certificatePassword = null, string? serverUrl = null)
+    {
+        return new RavenDBSecuredServerSettings
+        {
+            SetupMode = SetupMode.LetsEncrypt,
             ServerUrl = serverUrl,
             CertificatePath = certificatePath,
             CertificatePassword = certificatePassword,
