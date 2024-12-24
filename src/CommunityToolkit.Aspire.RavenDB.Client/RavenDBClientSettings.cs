@@ -48,7 +48,8 @@ public sealed class RavenDBClientSettings
     public string? DatabaseName { get; set; }
 
     /// <summary>
-    /// Gets or sets a boolean value that indicates whether a new database should be created.
+    /// Gets or sets a value indicating whether a new database should be created if it does not already exist.
+    /// If set to <see langword="true"/> and a database with the specified name already exists, the existing database will be used.
     /// The default value is <see langword="false"/>.
     /// </summary>
     public bool CreateDatabase { get; init; } = false;

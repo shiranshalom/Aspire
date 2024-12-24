@@ -212,8 +212,12 @@ public static class RavenDBClientExtension
 
         if (ravenDbClientSettings.CreateDatabase)
         {
-            var databaseRecord = new DatabaseRecord(ravenDbClientSettings.DatabaseName);
-            documentStore.Maintenance.Server.Send(new CreateDatabaseOperation(databaseRecord));
+            var databaseRecord = documentStore.Maintenance.Server.Send(new GetDatabaseRecordOperation(ravenDbClientSettings.DatabaseName));
+            if (databaseRecord == null)
+            {
+                var newDatabaseRecord = new DatabaseRecord(ravenDbClientSettings.DatabaseName);
+                documentStore.Maintenance.Server.Send(new CreateDatabaseOperation(newDatabaseRecord));
+            }
         }
 
         return documentStore;
