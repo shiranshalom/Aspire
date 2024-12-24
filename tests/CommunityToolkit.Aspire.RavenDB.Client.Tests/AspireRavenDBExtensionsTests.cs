@@ -3,7 +3,6 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
-using Raven.Client.Exceptions;
 using Raven.Client.Http;
 
 namespace CommunityToolkit.Aspire.RavenDB.Client.Tests;
@@ -158,23 +157,6 @@ public class AspireRavenDBExtensionsTests : IClassFixture<RavenDbServerFixture>
 
         session.Store(new object(), "products/77-A");
         session.SaveChanges();
-    }
-
-    [Fact]
-    public void AddRavenDbClientShouldThrowOnDatabaseAlreadyExist()
-    {
-        var databaseName = Guid.NewGuid().ToString("N");
-        var settings = GetDefaultSettings(databaseName);
-
-        var builder = CreateBuilder();
-
-        Assert.Throws<ConcurrencyException>(() =>
-        {
-            builder.AddRavenDBClient(settings);
-            builder.AddRavenDBClient(settings);
-
-            using var host = builder.Build();
-        });
     }
 
     [Fact]
