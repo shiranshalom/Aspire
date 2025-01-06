@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-     <Description>An Aspire integration leveraging the RavenDB container.</Description>
+    <Description>An Aspire integration leveraging the RavenDB container.</Description>
+    <AdditionalPackageTags>hosting ravendb</AdditionalPackageTags>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
