@@ -1,9 +1,9 @@
 #nullable enable
-CommunityToolkit.Aspire.RavenDB.Client.RavenDBClientExtension
-static CommunityToolkit.Aspire.RavenDB.Client.RavenDBClientExtension.AddKeyedRavenDBClient(this Microsoft.Extensions.Hosting.IHostApplicationBuilder! builder, object! serviceKey, CommunityToolkit.Aspire.RavenDB.Client.RavenDBClientSettings! settings) -> void
-static CommunityToolkit.Aspire.RavenDB.Client.RavenDBClientExtension.AddKeyedRavenDBClient(this Microsoft.Extensions.Hosting.IHostApplicationBuilder! builder, object! serviceKey, string![]! connectionUrls, string? databaseName, System.Security.Cryptography.X509Certificates.X509Certificate2? certificate = null) -> void
-static CommunityToolkit.Aspire.RavenDB.Client.RavenDBClientExtension.AddRavenDBClient(this Microsoft.Extensions.Hosting.IHostApplicationBuilder! builder, CommunityToolkit.Aspire.RavenDB.Client.RavenDBClientSettings! settings) -> void
-static CommunityToolkit.Aspire.RavenDB.Client.RavenDBClientExtension.AddRavenDBClient(this Microsoft.Extensions.Hosting.IHostApplicationBuilder! builder, string![]! connectionUrls, string? databaseName, System.Security.Cryptography.X509Certificates.X509Certificate2? certificate = null) -> void
+Microsoft.Extensions.Hosting.RavenDBClientExtension
+static Microsoft.Extensions.Hosting.RavenDBClientExtension.AddKeyedRavenDBClient(this Microsoft.Extensions.Hosting.IHostApplicationBuilder! builder, object! serviceKey, CommunityToolkit.Aspire.RavenDB.Client.RavenDBClientSettings! settings) -> void
+static Microsoft.Extensions.Hosting.RavenDBClientExtension.AddKeyedRavenDBClient(this Microsoft.Extensions.Hosting.IHostApplicationBuilder! builder, object! serviceKey, string![]! connectionUrls, string? databaseName, System.Security.Cryptography.X509Certificates.X509Certificate2? certificate = null) -> void
+static Microsoft.Extensions.Hosting.RavenDBClientExtension.AddRavenDBClient(this Microsoft.Extensions.Hosting.IHostApplicationBuilder! builder, CommunityToolkit.Aspire.RavenDB.Client.RavenDBClientSettings! settings) -> void
+static Microsoft.Extensions.Hosting.RavenDBClientExtension.AddRavenDBClient(this Microsoft.Extensions.Hosting.IHostApplicationBuilder! builder, string![]! connectionUrls, string? databaseName, System.Security.Cryptography.X509Certificates.X509Certificate2? certificate = null) -> void
 CommunityToolkit.Aspire.RavenDB.Client.RavenDBClientSettings
 CommunityToolkit.Aspire.RavenDB.Client.RavenDBClientSettings.RavenDBClientSettings(string![]! urls, string? databaseName = null) -> void
 CommunityToolkit.Aspire.RavenDB.Client.RavenDBClientSettings.Urls.get -> string![]!

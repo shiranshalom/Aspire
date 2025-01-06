@@ -1,12 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using CommunityToolkit.Aspire.RavenDB.Client;
+using Microsoft.Extensions.DependencyInjection;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
 using Raven.Client.ServerWide;
 using Raven.Client.ServerWide.Operations;
 using System.Security.Cryptography.X509Certificates;
 
-namespace CommunityToolkit.Aspire.RavenDB.Client;
+namespace Microsoft.Extensions.Hosting;
 
 /// <summary>
 /// Extension methods for connecting RavenDB database.
